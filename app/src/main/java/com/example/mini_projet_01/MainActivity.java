@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,9 +16,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     Button btn_loadUsers, btn_quit;
+    ListView lv_users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btn_loadUsers = findViewById(R.id.btn_loadUsers);
         btn_quit = findViewById(R.id.btn_quit);
+        lv_users = findViewById(R.id.lv_users);
 
         btn_loadUsers.setOnClickListener(this);
         btn_quit.setOnClickListener(this);
@@ -33,38 +39,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view == btn_loadUsers) {
-            try {
-                InputStream inputStream = getAssets().open("users.json");
-                int code;
-                StringBuilder stringBuilder = new StringBuilder();
-                String jsongString;
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_expandable_list_item_1,
+                    getUsers());
 
-                code = inputStream.read();
-                while (code != -1) {
-                    stringBuilder.append((char) code);
-                    code = inputStream.read();
-                }
-
-                jsongString = stringBuilder.toString();
-
-                JSONObject jsonObject = new JSONObject(jsongString);
-//                JSONArray jsonArray = (JSONArray) jsonObject.get("users");
-                JSONArray jsonArray = jsonObject.getJSONArray("users");
-                
-                StringBuilder stringBuilderFullName = new StringBuilder();
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject user = jsonArray.getJSONObject(i);
-                    JSONObject userName = user.getJSONObject("name");
-                    String fullName = String.format("%s %s\n", userName.get("first"), userName.get("last"));
-                    stringBuilderFullName.append(fullName);
-                }
-
-                Toast.makeText(this, stringBuilderFullName, Toast.LENGTH_SHORT).show();
-            } catch (IOException | JSONException e) {
-                e.printStackTrace();
-            }
+            lv_users.setAdapter(arrayAdapter);
         } else {
             finish();
         }
+    }
+
+    private ArrayList<String> getUsers() {
+        ArrayList<String> usersFullNames = new ArrayList<>();
+
+        try {
+            InputStream inputStream = getAssets().open("users.json");
+            int code;
+            StringBuilder stringBuilder = new StringBuilder();
+            String jsongString;
+
+            code = inputStream.read();
+            while (code != -1) {
+                stringBuilder.append((char) code);
+                code = inputStream.read();
+            }
+
+            jsongString = stringBuilder.toString();
+
+            JSONObject jsonObject = new JSONObject(jsongString);
+//                JSONArray jsonArray = (JSONArray) jsonObject.get("users");
+            JSONArray jsonArray = jsonObject.getJSONArray("users");
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject user = jsonArray.getJSONObject(i);
+                JSONObject userName = user.getJSONObject("name");
+                String fullName = String.format("%s %s\n", userName.get("first"), userName.get("last"));
+                usersFullNames.add(fullName);
+            }
+
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return usersFullNames;
     }
 }
