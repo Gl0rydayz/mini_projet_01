@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -28,9 +29,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view == btn_loadUsers) {
-            InputStream inputStream = getResources().openRawResource(R.raw.users);
             try {
-                Toast.makeText(this, String.valueOf((char) inputStream.read()), Toast.LENGTH_SHORT).show();
+                InputStream inputStream = getAssets().open("users.json");
+                int code;
+                StringBuilder stringBuilder = new StringBuilder();
+                String jsongString;
+
+                code = inputStream.read();
+                while (code != -1) {
+                    stringBuilder.append((char) code);
+                    code = inputStream.read();
+                }
+
+                jsongString = stringBuilder.toString();
+                Toast.makeText(this, jsongString, Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
