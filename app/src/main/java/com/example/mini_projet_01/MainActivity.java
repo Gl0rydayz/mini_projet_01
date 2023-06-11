@@ -1,8 +1,13 @@
 package com.example.mini_projet_01;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.motion.widget.OnSwipe;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,20 +25,40 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    Button btn_loadUsers, btn_quit;
+    Button btn_loadUsers;
+    TextView tv_quit;
     ListView lv_users;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         btn_loadUsers = findViewById(R.id.btn_loadUsers);
-        btn_quit = findViewById(R.id.btn_quit);
+        tv_quit = findViewById(R.id.tv_quit);
         lv_users = findViewById(R.id.lv_users);
 
         btn_loadUsers.setOnClickListener(this);
-        btn_quit.setOnClickListener(this);
+
+        GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onFling(@NonNull MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
+                if (e1.getX() - e2.getX() >= 100) {
+                    finish();
+                }
+
+                return super.onFling(e1, e2, velocityX, velocityY);
+            }
+        });
+
+        tv_quit.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                gestureDetector.onTouchEvent(motionEvent);
+                return true;
+            }
+        });
     }
 
     @Override
@@ -42,8 +67,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             UsersAdapter adapter = new UsersAdapter(this, getUsers());
 
             lv_users.setAdapter(adapter);
-        } else {
-            finish();
         }
     }
 
