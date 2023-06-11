@@ -30,11 +30,11 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_itemUsersFullName" />
 
     <TextView
-        android:id="@+id/tv_itemUsersGender"
+        android:id="@+id/tv_itemUsersNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:text="Gender"
+        android:text="#00"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_itemUsersCity"
         app:layout_constraintEnd_toEndOf="parent"

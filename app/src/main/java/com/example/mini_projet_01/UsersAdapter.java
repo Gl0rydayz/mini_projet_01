@@ -1,17 +1,12 @@
 package com.example.mini_projet_01;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -47,11 +42,19 @@ public class UsersAdapter extends BaseAdapter {
 
         TextView tv_itemUsersFullName = view.findViewById(R.id.tv_itemUsersFullName);
         TextView tv_itemUsersCity = view.findViewById(R.id.tv_itemUsersCity);
-        TextView tv_itemUsersGender = view.findViewById(R.id.tv_itemUsersGender);
+        TextView tv_itemUsersGender = view.findViewById(R.id.tv_itemUsersNumber);
 
         tv_itemUsersFullName.setText(users.get(i).fullName());
         tv_itemUsersCity.setText(users.get(i).getCity());
         tv_itemUsersGender.setText(users.get(i).getGender());
+
+        if (tv_itemUsersGender.getText().equals("male")) {
+            view.setBackgroundColor(Color.CYAN);
+        } else {
+            view.setBackgroundColor(Color.MAGENTA);
+        }
+
+        tv_itemUsersGender.setText("#" + (i + 1));
 
         return view;
     }
