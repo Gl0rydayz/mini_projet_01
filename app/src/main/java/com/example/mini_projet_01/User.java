@@ -52,6 +52,7 @@ public class User {
     }
     //endregion
 
+    //region Methods
     public String fullName() {
         return String.format("%s%s %s", this.getFirstName().substring(0,1).toUpperCase(), this.getFirstName().substring(1).toLowerCase(), this.getLastName().toUpperCase());
     }
@@ -64,4 +65,5 @@ public class User {
                 this.getGender().equals("male") ? "♂("+this.getGender()+")" : "♀("+this.getGender()+")",
                 this.getCity());
     }
+    //endregion
 }

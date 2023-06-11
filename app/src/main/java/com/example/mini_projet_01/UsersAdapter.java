@@ -1,12 +1,14 @@
 package com.example.mini_projet_01;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,15 +53,18 @@ public class UsersAdapter extends BaseAdapter {
 
         TextView tv_itemUsersFullName = view.findViewById(R.id.tv_itemUsersFullName);
         TextView tv_itemUsersCity = view.findViewById(R.id.tv_itemUsersCity);
-        Button btn_itemUsersDetails = view.findViewById(R.id.btn_itemUsersDetails);
+        ImageButton imb_itemUsersMore = view.findViewById(R.id.imb_itemUsersMore);
 
         tv_itemUsersFullName.setText(users.get(i).fullName());
         tv_itemUsersCity.setText(users.get(i).getCity());
-        btn_itemUsersDetails.setOnClickListener(v -> {
-            AlertDialog builder = new AlertDialog.Builder(context)
-                    .setTitle(String.format("User %d", i+1))
-                    .setMessage(users.get(i).toString())
-                    .show();
+        imb_itemUsersMore.setOnClickListener(v -> {
+            Intent intent = new Intent(context, DetailsActivity.class);
+            intent.putExtra("firstName", users.get(i).getFirstName().substring(0,1).toUpperCase() +
+                    users.get(i).getFirstName().substring(1).toLowerCase());
+            intent.putExtra("lastName", users.get(i).getLastName().toUpperCase());
+            intent.putExtra("gender", users.get(i).getGender().equals("male") ? "♂": "♀");
+            intent.putExtra("city", users.get(i).getCity());
+            context.startActivity(intent);
         });
 
         return view;
