@@ -8,13 +8,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
 import java.util.ArrayList;
 
 public class UsersAdapter extends BaseAdapter {
-    final int DOUBLE_CLICK_TIMEOUT = 250;
+    final int LONG_PRESS_TIMEOUT = 1000;
     ArrayList<User> users;
 
     LayoutInflater inflater;
@@ -48,32 +49,27 @@ public class UsersAdapter extends BaseAdapter {
 
         TextView tv_itemUsersFullName = view.findViewById(R.id.tv_itemUsersFullName);
         TextView tv_itemUsersCity = view.findViewById(R.id.tv_itemUsersCity);
-        ImageView iv_itemUsersCheck = view.findViewById(R.id.iv_itemUsersCheck);
 
         tv_itemUsersFullName.setText(users.get(i).fullName());
         tv_itemUsersCity.setText(users.get(i).getCity());
 
-        view.setOnLongClickListener(v -> {
-            AlertDialog builder = new AlertDialog.Builder(context)
-                    .setTitle(String.format("User %d", i + 1))
-                    .setMessage(users.get(i).toString())
-                    .show();
-
-            return false;
-        });
-
         view.setOnTouchListener(new View.OnTouchListener() {
-            long lastClickTime = 0;
-
+            long clickTime;
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    long clickTime = System.currentTimeMillis();
-                    if ((clickTime - lastClickTime) <= DOUBLE_CLICK_TIMEOUT) {
-                        iv_itemUsersCheck.setVisibility(iv_itemUsersCheck.getVisibility() == view.INVISIBLE ? View.VISIBLE : View.INVISIBLE);
-                    } else {
-                        lastClickTime = clickTime;
-                    }
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        clickTime = System.currentTimeMillis();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        long clickHoldDuration = System.currentTimeMillis() - clickTime;
+                        if (clickHoldDuration >= 1000 && clickHoldDuration <= 2000) {
+                            AlertDialog builder = new AlertDialog.Builder(context)
+                                    .setTitle(String.format("User %d", i + 1))
+                                    .setMessage(users.get(i).toString())
+                                    .show();
+                        }
+                        break;
                 }
 
                 return true;
