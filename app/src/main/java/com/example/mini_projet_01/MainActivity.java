@@ -39,11 +39,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view == btn_loadUsers) {
-            ArrayAdapter<User> arrayAdapter = new ArrayAdapter<>(this,
-                    android.R.layout.simple_expandable_list_item_1,
-                    getUsers());
+            UsersAdapter adapter = new UsersAdapter(this, getUsers());
 
-            lv_users.setAdapter(arrayAdapter);
+            lv_users.setAdapter(adapter);
         } else {
             finish();
         }
