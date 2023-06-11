@@ -1,5 +1,7 @@
 package com.example.mini_projet_01;
 
+import androidx.annotation.NonNull;
+
 public class User {
     private String firstName;
     private String lastName;
@@ -50,5 +52,11 @@ public class User {
 
     public String fullName() {
         return String.format("%s%s %s", this.getFirstName().substring(0,1).toUpperCase(), this.getFirstName().substring(1).toLowerCase(), this.getLastName().toUpperCase());
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format("%s | %s\n%s", this.fullName(), this.getGender(), this.getCity());
     }
 }
