@@ -51,15 +51,16 @@ public class UsersAdapter extends BaseAdapter {
 
         TextView tv_itemUsersFullName = view.findViewById(R.id.tv_itemUsersFullName);
         TextView tv_itemUsersCity = view.findViewById(R.id.tv_itemUsersCity);
-        Button btn_itemUsersDetails = view.findViewById(R.id.btn_itemUsersDetails);
 
         tv_itemUsersFullName.setText(users.get(i).fullName());
         tv_itemUsersCity.setText(users.get(i).getCity());
-        btn_itemUsersDetails.setOnClickListener(v -> {
+        view.setOnLongClickListener(v -> {
             AlertDialog builder = new AlertDialog.Builder(context)
-                    .setTitle(String.format("User %d", i+1))
+                    .setTitle(String.format("User %d", i + 1))
                     .setMessage(users.get(i).toString())
                     .show();
+
+            return false;
         });
 
         return view;

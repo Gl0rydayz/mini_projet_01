@@ -29,15 +29,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_itemUsersFullName" />
 
-    <Button
-        android:id="@+id/btn_itemUsersDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="Details"
-        android:backgroundTint="@color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_itemUsersCity"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_itemUsersFullName" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
