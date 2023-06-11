@@ -6,10 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import org.w3c.dom.Text;
 
@@ -19,9 +21,11 @@ public class UsersAdapter extends BaseAdapter {
     ArrayList<User> users;
 
     LayoutInflater inflater;
+    Context context;
 
     public UsersAdapter(Context context, ArrayList<User> users) {
         this.users = users;
+        this.context = context;
 
         inflater = LayoutInflater.from(context);
     }
@@ -47,11 +51,16 @@ public class UsersAdapter extends BaseAdapter {
 
         TextView tv_itemUsersFullName = view.findViewById(R.id.tv_itemUsersFullName);
         TextView tv_itemUsersCity = view.findViewById(R.id.tv_itemUsersCity);
-        TextView tv_itemUsersGender = view.findViewById(R.id.tv_itemUsersGender);
+        Button btn_itemUsersDetails = view.findViewById(R.id.btn_itemUsersDetails);
 
         tv_itemUsersFullName.setText(users.get(i).fullName());
         tv_itemUsersCity.setText(users.get(i).getCity());
-        tv_itemUsersGender.setText(users.get(i).getGender());
+        btn_itemUsersDetails.setOnClickListener(v -> {
+            AlertDialog builder = new AlertDialog.Builder(context)
+                    .setTitle(String.format("User %d", i+1))
+                    .setMessage(users.get(i).toString())
+                    .show();
+        });
 
         return view;
     }

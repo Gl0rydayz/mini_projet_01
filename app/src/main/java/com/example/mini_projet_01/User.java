@@ -43,12 +43,14 @@ public class User {
     //endregion
 
 
+    //region Constructor
     public User(String firstName, String lastName, String gender, String city) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.city = city;
     }
+    //endregion
 
     public String fullName() {
         return String.format("%s%s %s", this.getFirstName().substring(0,1).toUpperCase(), this.getFirstName().substring(1).toLowerCase(), this.getLastName().toUpperCase());
@@ -57,6 +59,9 @@ public class User {
     @NonNull
     @Override
     public String toString() {
-        return String.format("%s | %s\n%s", this.fullName(), this.getGender(), this.getCity());
+        return String.format("Hi, i'm %s, i am %s\nI live in %s",
+                this.fullName(),
+                this.getGender().equals("male") ? "♂("+this.getGender()+")" : "♀("+this.getGender()+")",
+                this.getCity());
     }
 }
