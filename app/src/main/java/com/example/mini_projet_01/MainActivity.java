@@ -41,22 +41,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btn_loadUsers.setOnClickListener(this);
 
-        GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+        tv_quit.setOnTouchListener(new OnSwipeTouchListener(this) {
             @Override
-            public boolean onFling(@NonNull MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
-                if (e1.getX() - e2.getX() >= 100) {
-                    finish();
-                }
-
-                return super.onFling(e1, e2, velocityX, velocityY);
+            public void swipeLeft() {
+                finish();
             }
-        });
 
-        tv_quit.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                gestureDetector.onTouchEvent(motionEvent);
-                return true;
+            public void swipeRight() {
+                Toast.makeText(MainActivity.this, "This action is not yet implemented", Toast.LENGTH_SHORT).show();
             }
         });
     }
