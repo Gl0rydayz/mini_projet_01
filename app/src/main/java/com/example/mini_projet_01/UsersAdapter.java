@@ -6,10 +6,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentManager;
 
 import java.util.ArrayList;
 
@@ -19,12 +21,14 @@ public class UsersAdapter extends BaseAdapter {
 
     LayoutInflater inflater;
     Context context;
+    FragmentManager fragmentManager;
 
-    public UsersAdapter(Context context, ArrayList<User> users) {
+    public UsersAdapter(Context context, ArrayList<User> users, FragmentManager fragmentManager) {
         this.users = users;
         this.context = context;
 
         inflater = LayoutInflater.from(context);
+        this.fragmentManager = fragmentManager;
     }
 
     @Override
@@ -49,6 +53,7 @@ public class UsersAdapter extends BaseAdapter {
         TextView tv_itemUsersFullName = view.findViewById(R.id.tv_itemUsersFullName);
         TextView tv_itemUsersCity = view.findViewById(R.id.tv_itemUsersCity);
         ImageView iv_itemUsersCheck = view.findViewById(R.id.iv_itemUsersCheck);
+        Button btn_itemUsersDetails = view.findViewById(R.id.btn_itemUsersDetails);
 
         tv_itemUsersFullName.setText(users.get(i).fullName());
         tv_itemUsersCity.setText(users.get(i).getCity());
@@ -78,6 +83,11 @@ public class UsersAdapter extends BaseAdapter {
 
                 return true;
             }
+        });
+
+        btn_itemUsersDetails.setOnClickListener(v -> {
+            UserDetailsDialog userDetailsDialog = new UserDetailsDialog(users.get(i));
+            userDetailsDialog.show(fragmentManager, null);
         });
 
         return view;

@@ -33,11 +33,21 @@
         android:id="@+id/iv_itemUsersCheck"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="5dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/tv_itemUsersCity"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_itemUsersDetails"
         app:layout_constraintTop_toTopOf="@+id/tv_itemUsersFullName"
+        app:layout_constraintVertical_bias="0.428"
         app:srcCompat="@drawable/check" />
+
+    <Button
+        android:id="@+id/btn_itemUsersDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Details"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_itemUsersCheck"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_itemUsersCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
