@@ -46,11 +46,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void swipeLeft() {
                 finish();
             }
-
-            @Override
-            public void swipeRight() {
-                Toast.makeText(MainActivity.this, "This action is not yet implemented", Toast.LENGTH_SHORT).show();
-            }
         });
     }
 
