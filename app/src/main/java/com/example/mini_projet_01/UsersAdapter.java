@@ -1,6 +1,8 @@
 package com.example.mini_projet_01;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -48,35 +51,46 @@ public class UsersAdapter extends BaseAdapter {
 
         TextView tv_itemUsersFullName = view.findViewById(R.id.tv_itemUsersFullName);
         TextView tv_itemUsersCity = view.findViewById(R.id.tv_itemUsersCity);
-        ImageView iv_itemUsersCheck = view.findViewById(R.id.iv_itemUsersCheck);
 
         tv_itemUsersFullName.setText(users.get(i).fullName());
         tv_itemUsersCity.setText(users.get(i).getCity());
 
-        view.setOnLongClickListener(v -> {
-            AlertDialog builder = new AlertDialog.Builder(context)
-                    .setTitle(String.format("User %d", i + 1))
-                    .setMessage(users.get(i).toString())
-                    .show();
+//        view.setOnLongClickListener(v -> {
+//            AlertDialog builder = new AlertDialog.Builder(context)
+//                    .setTitle(String.format("User %d", i + 1))
+//                    .setMessage(users.get(i).toString())
+//                    .show();
+//
+//            return false;
+//        });
 
-            return false;
-        });
 
-        view.setOnTouchListener(new View.OnTouchListener() {
-            long lastClickTime = 0;
-
+        View finalView = view;
+        view.setOnTouchListener(new OnSwipeTouchListener(context) {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    long clickTime = System.currentTimeMillis();
-                    if ((clickTime - lastClickTime) <= DOUBLE_CLICK_TIMEOUT) {
-                        iv_itemUsersCheck.setVisibility(iv_itemUsersCheck.getVisibility() == view.INVISIBLE ? View.VISIBLE : View.INVISIBLE);
-                    } else {
-                        lastClickTime = clickTime;
-                    }
-                }
+            public void swipeLeft() {
+                finalView.setBackgroundColor(Color.RED);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                        .setTitle("Attention")
+                        .setMessage("Do you want to delete this user ? ")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int j) {
+                                //changed i with "j"
+                                users.remove(i);
+                                notifyDataSetChanged(); //refresh the listView after we remove the item
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                finalView.setBackgroundColor(Color.TRANSPARENT);
+                            }
+                        });
 
-                return true;
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
 
