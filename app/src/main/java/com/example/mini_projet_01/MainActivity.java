@@ -85,11 +85,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                String fullName = String.format("%s %s\n", userName.get("first"), userName.get("last"));
                 usersFullNames.add(new User(userName.getString("first"), userName.getString("last"),
                         user.getString("gender"), user.getString("city")));
+                MyThread01 myThread01 = new MyThread01();
+                myThread01.start();
             }
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
         return usersFullNames;
+    }
+
+    class MyThread01 extends Thread {
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(250);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+        }
     }
 }
