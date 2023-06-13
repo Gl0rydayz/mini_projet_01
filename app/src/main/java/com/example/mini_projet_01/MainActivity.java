@@ -3,6 +3,8 @@ package com.example.mini_projet_01;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.motion.widget.OnSwipe;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -11,7 +13,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btn_loadUsers;
     TextView tv_quit;
     ListView lv_users;
+    ProgressBar progressBar;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -38,6 +43,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_loadUsers = findViewById(R.id.btn_loadUsers);
         tv_quit = findViewById(R.id.tv_quit);
         lv_users = findViewById(R.id.lv_users);
+        //region Initialize progressBar
+        progressBar = new ProgressBar(this);
+        //endregion
+
+        //region Generate an Id for the progressBar and set it's visibility to INVISIBLE
+        progressBar.setId(View.generateViewId());
+        progressBar.setVisibility(View.INVISIBLE);
+        //endregion
+
+        // Add the ProgressBar to the layout
+        ConstraintLayout constraintLayout = findViewById(R.id.myCLayout);
+        constraintLayout.addView(progressBar);
+
+        // Center the ProgressBar
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(progressBar.getId(), ConstraintSet.TOP, constraintLayout.getId(), ConstraintSet.TOP, 0);
+        constraintSet.connect(progressBar.getId(), ConstraintSet.BOTTOM, constraintLayout.getId(), ConstraintSet.BOTTOM, 0);
+        constraintSet.connect(progressBar.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START, 0);
+        constraintSet.connect(progressBar.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 0);
+        constraintSet.applyTo(constraintLayout);
 
         btn_loadUsers.setOnClickListener(this);
 
@@ -52,9 +78,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view == btn_loadUsers) {
-            UsersAdapter adapter = new UsersAdapter(this, getUsers());
-
-            lv_users.setAdapter(adapter);
+//            UsersAdapter adapter = new UsersAdapter(this, getUsers());
+//
+//            lv_users.setAdapter(adapter);
+            //region Handle the Progressbar
+            progressBar.setVisibility(View.VISIBLE); // Show progress bar before loading users
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    ArrayList<User> users = getUsers();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            UsersAdapter adapter = new UsersAdapter(MainActivity.this, users);
+                            lv_users.setAdapter(adapter);
+                            progressBar.setVisibility(View.INVISIBLE); // Hide progress bar after loading users
+                        }
+                    });
+                }
+            }).start();
+            //endregion
         }
     }
 
