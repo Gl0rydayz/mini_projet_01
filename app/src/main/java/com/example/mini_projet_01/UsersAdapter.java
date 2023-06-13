@@ -65,12 +65,12 @@ public class UsersAdapter extends BaseAdapter {
 //        });
 
 
-        View finalView = view;
+        View viewV2 = view;
         view.setOnTouchListener(new OnSwipeTouchListener(context) {
             @Override
             public void swipeLeft() {
-                finalView.setBackgroundColor(Color.RED);
-                AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                viewV2.setBackgroundColor(Color.RED);
+                AlertDialog builder = new AlertDialog.Builder(context)
                         .setTitle("Attention")
                         .setMessage("Do you want to delete this user ? ")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -85,12 +85,10 @@ public class UsersAdapter extends BaseAdapter {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();
-                                finalView.setBackgroundColor(Color.TRANSPARENT);
+                                viewV2.setBackgroundColor(Color.TRANSPARENT);
                             }
-                        });
-
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
+                        })
+                        .show();
             }
         });
 
