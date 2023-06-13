@@ -1,23 +1,16 @@
 package com.example.mini_projet_01;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.motion.widget.OnSwipe;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,7 +18,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -128,8 +120,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                String fullName = String.format("%s %s\n", userName.get("first"), userName.get("last"));
                 usersFullNames.add(new User(userName.getString("first"), userName.getString("last"),
                         user.getString("gender"), user.getString("city")));
-                MyThread01 myThread01 = new MyThread01();
-                myThread01.start();
+                DelayThread delayThread = new DelayThread();
+                delayThread.start();
             }
 
         } catch (IOException | JSONException e) {
@@ -138,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return usersFullNames;
     }
 
-    class MyThread01 extends Thread {
+    class DelayThread extends Thread {
         @Override
         public void run() {
             runOnUiThread(new Runnable() {
