@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 JSONObject userName = user.getJSONObject("name");
 //                String fullName = String.format("%s %s\n", userName.get("first"), userName.get("last"));
                 usersFullNames.add(new User(userName.getString("first"), userName.getString("last"),
-                        user.getString("gender"), user.getString("city")));
+                        user.getString("gender"), user.getString("city"), user.getString("image")));
             }
 
         } catch (IOException | JSONException e) {

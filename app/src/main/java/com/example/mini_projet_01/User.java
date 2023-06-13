@@ -1,5 +1,7 @@
 package com.example.mini_projet_01;
 
+import android.graphics.drawable.Drawable;
+
 import androidx.annotation.NonNull;
 
 public class User {
@@ -7,6 +9,9 @@ public class User {
     private String lastName;
     private String gender;
     private String city;
+
+    //Add image attribute
+    private String image;
 
     //region Getters and Setters
     public String getFirstName() {
@@ -40,15 +45,25 @@ public class User {
     public void setCity(String city) {
         this.city = city;
     }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     //endregion
 
 
     //region Constructor
-    public User(String firstName, String lastName, String gender, String city) {
+    public User(String firstName, String lastName, String gender, String city, String image) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.city = city;
+        this.image = image;
     }
     //endregion
 
